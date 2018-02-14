@@ -6,6 +6,7 @@
         createdRowOuterDiv,
         columnDiv,
         createdColumnDiv,
+        player,
         interval = null;
     const rowLength = 3,
         colLength = 6,
@@ -40,6 +41,25 @@
             wrapper.appendChild(createdRowOuterDiv);
         }
 
+        columnDiv = {
+            tag: "div",
+            attrs: {
+                "class": "block player",
+                "id": "player"
+            }
+        };
+        
+        createdColumnDiv = domELementCreator(columnDiv);
+
+        wrapper.appendChild(createdColumnDiv);
+
+        player = domTraverser("player");
+        player.addEventListener("keypress", movePlayerCar);
+
+    }
+
+    function movePlayerCar(e) {
+debugger
     }
 
 

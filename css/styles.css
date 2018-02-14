@@ -5,6 +5,7 @@
 
 .wrapper {
     width: 300px;
+    position: relative;
 }
 
 .row {
@@ -20,10 +21,18 @@
     display: inline-block;
     background: #ddd;
 }
+
 .block:hover {
-    background: gray
+    background: gray;
 }
 
 .car {
     background: black;
+}
+
+.player {
+    background: cyan;
+    position: absolute;
+    bottom: 0;
+    left: 100px;
 }
