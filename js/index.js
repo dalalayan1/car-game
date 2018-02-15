@@ -45,7 +45,8 @@
             tag: "div",
             attrs: {
                 "class": "block player",
-                "id": "player"
+                "id": "player",
+                "tabIndex": "10"
             }
         };
         
@@ -53,13 +54,25 @@
 
         wrapper.appendChild(createdColumnDiv);
 
-        player = domTraverser("player");
-        player.addEventListener("keypress", movePlayerCar);
-
     }
 
     function movePlayerCar(e) {
-debugger
+        if( e.keyCode === 37 ){
+            
+            player = domTraverser("player");
+            debugger
+            if(player.style.left > "0px") {
+                debugger
+                player.style.left = `${player.style.left - 100}px`;
+            }
+        }
+        else if ( e.keyCode === 39 ) {
+            player = domTraverser("player");
+            
+            if(player.style.left < "200px") {
+                player.style.left = `${player.style.left + 100}px`;
+            }
+        }
     }
 
 
@@ -104,6 +117,8 @@ debugger
     createMatrix();
 
     moveCar();
+    
+    document.addEventListener("keydown", movePlayerCar);
 
 
 })();
