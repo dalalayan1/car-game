@@ -2,11 +2,14 @@
 
 (function(){
     var wrapper = domTraverser("wrapper"),
+        score = domTraverser("score"),
         rowOuterDiv,
         createdRowOuterDiv,
         columnDiv,
         createdColumnDiv,
         player,
+        playerScore = 0,
+        carIdx = 0,
         interval = null;
     const rowLength = 3,
         colLength = 6,
@@ -14,39 +17,25 @@
 
     function createMatrix() {
 
-        for(var i = 0; i<colLength; i++) {
-
-            rowOuterDiv = {
-                tag: "div",
-                attrs: {
-                    "class": `row ${i}`
-                }
-            };
-            
-            createdRowOuterDiv = domELementCreator(rowOuterDiv);
-            for(var j = 0; j<rowLength; j++) {
-
-                columnDiv = {
-                    tag: "div",
-                    attrs: {
-                        "class": `block ${i}-${j}`
-                    }
-                };
-                
-                createdColumnDiv = domELementCreator(columnDiv);
-
-                createdRowOuterDiv.appendChild(createdColumnDiv);
+        columnDiv = {
+            tag: "div",
+            attrs: {
+                "class": "block car",
+                "id": "car",
+                "style": "top: 0px"
             }
-            
-            wrapper.appendChild(createdRowOuterDiv);
-        }
+        };
+        
+        createdColumnDiv = domELementCreator(columnDiv);
+
+        wrapper.appendChild(createdColumnDiv);
 
         columnDiv = {
             tag: "div",
             attrs: {
                 "class": "block player",
                 "id": "player",
-                "tabIndex": "10"
+                "style": "left: 100px;bottom: 0px"
             }
         };
         
@@ -60,53 +49,58 @@
         if( e.keyCode === 37 ){
             
             player = domTraverser("player");
-            debugger
+            
             if(player.style.left > "0px") {
-                debugger
-                player.style.left = `${player.style.left - 100}px`;
+                player.style.left = `${parseInt(player.style.left) - 100}px`;
             }
         }
         else if ( e.keyCode === 39 ) {
             player = domTraverser("player");
             
             if(player.style.left < "200px") {
-                player.style.left = `${player.style.left + 100}px`;
+                player.style.left = `${parseInt(player.style.left) + 100}px`;
             }
         }
     }
 
+    function incrementScore() {
+        score.innerHTML = ++playerScore;
+    }
 
-    function shiftCar(blocks, xpos) {
-        var carIdx;
 
-        for(var i = 0; i < blocks.length; i++){
-                if(blocks[i].classList.contains('car')) {
-                    carIdx = i;
-                }
-                blocks[i].classList.remove('car');
+    function shiftCar(car, xpos) {
+        
+        incrementScore();
+
+        if (carIdx === colLength) {
+            moveCar();   
         }
-        if(Math.floor(carIdx/rowLength) === colLength - 1) {
-            
-            moveCar();
+
+        if (carIdx === 0) {
+            car.style.top = `0px`;
         }
         else {
-            blocks[carIdx+rowLength].classList.add('car');
+            car.style.top = `${parseInt(car.style.top) + 100}px`;
         }
+        carIdx++;
+
     }
+
 
     function moveCar() {
 
-
         clearInterval(interval);
-        
-        var blocks = domTraverser("block", true),
+
+        carIdx = 0;
+
+        var car = domTraverser("car"),
             xPos = Math.floor(Math.random() * rowLength);
 
-        blocks[xPos].classList.add('car');
+        car.style.left = `${xPos*100}px`;
         
         interval = setInterval(function() {
             
-            shiftCar(blocks, xPos);
+            shiftCar(car, xPos);
 
         }, 500);
         
