@@ -3,10 +3,9 @@
 (function(){
     var wrapper = domTraverser("wrapper"),
         score = domTraverser("score"),
-        rowOuterDiv,
-        createdRowOuterDiv,
-        columnDiv,
-        createdColumnDiv,
+        blockDiv,
+        createdBlockDiv,
+        car,
         player,
         playerScore = 0,
         carIdx = 0,
@@ -15,9 +14,9 @@
         colLength = 6,
         globalIdx = colLength;
 
-    function createMatrix() {
+    function createCarBlocks() {
 
-        columnDiv = {
+        blockDiv = {
             tag: "div",
             attrs: {
                 "class": "block car",
@@ -26,11 +25,11 @@
             }
         };
         
-        createdColumnDiv = domELementCreator(columnDiv);
+        createdBlockDiv = domELementCreator(blockDiv);
 
-        wrapper.appendChild(createdColumnDiv);
+        wrapper.appendChild(createdBlockDiv);
 
-        columnDiv = {
+        blockDiv = {
             tag: "div",
             attrs: {
                 "class": "block player",
@@ -39,9 +38,9 @@
             }
         };
         
-        createdColumnDiv = domELementCreator(columnDiv);
+        createdBlockDiv = domELementCreator(blockDiv);
 
-        wrapper.appendChild(createdColumnDiv);
+        wrapper.appendChild(createdBlockDiv);
 
     }
 
@@ -67,12 +66,31 @@
         score.innerHTML = ++playerScore;
     }
 
+    function checkForCrash() {
+        const {
+            style: {
+                left: carLeftPos,
+                top: carTopPos
+            }
+        } = car,
+        {
+            style: {
+                left: playerLeftPos
+            }
+        } = domTraverser("player");
 
-    function shiftCar(car, xpos) {
+        if (carLeftPos === playerLeftPos && carTopPos === `${(colLength - 1) * 100}px`) {
+            debugger
+        }
+    }
+
+    function shiftCar(xpos) {
         
         incrementScore();
 
         if (carIdx === colLength) {
+            checkForCrash();
+
             moveCar();   
         }
 
@@ -93,14 +111,15 @@
 
         carIdx = 0;
 
-        var car = domTraverser("car"),
-            xPos = Math.floor(Math.random() * rowLength);
+        car = domTraverser("car");
+
+        var xPos = Math.floor(Math.random() * rowLength);
 
         car.style.left = `${xPos*100}px`;
         
         interval = setInterval(function() {
             
-            shiftCar(car, xPos);
+            shiftCar();
 
         }, 500);
         
@@ -108,7 +127,7 @@
     }
     
 
-    createMatrix();
+    createCarBlocks();
 
     moveCar();
     
