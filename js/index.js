@@ -66,7 +66,7 @@
         score.innerHTML = ++playerScore;
     }
 
-    function checkForCrash() {
+    function checkForCollision() {
         const {
             style: {
                 left: carLeftPos,
@@ -80,8 +80,24 @@
         } = domTraverser("player");
 
         if (carLeftPos === playerLeftPos && carTopPos === `${(colLength - 1) * 100}px`) {
-            debugger
+            resetAll();
         }
+        else {
+            moveCar();  
+        }
+    }
+
+    function resetAll() {
+
+        clearInterval(interval);
+
+        const car = domTraverser("car"),
+            player = domTraverser("player");
+
+        player.classList.add("collision");
+
+        car.style.top = "0px";
+        carIdx = 0;
     }
 
     function shiftCar(xpos) {
@@ -89,9 +105,8 @@
         incrementScore();
 
         if (carIdx === colLength) {
-            checkForCrash();
-
-            moveCar();   
+            checkForCollision();
+ 
         }
 
         if (carIdx === 0) {
