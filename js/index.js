@@ -3,6 +3,7 @@
 (function(){
     var wrapper = domTraverser("wrapper"),
         score = domTraverser("score"),
+        gameOverModal = domTraverser("gameOverModal"),
         blockDiv,
         createdBlockDiv,
         car,
@@ -98,6 +99,8 @@
 
         car.style.top = "0px";
         carIdx = 0;
+
+        gameOverModal.classList.remove("disappear");
     }
 
     function shiftCar(xpos) {
